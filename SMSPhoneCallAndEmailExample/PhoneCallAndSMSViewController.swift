@@ -43,14 +43,14 @@ class PhoneCallAndSMSViewController: UIViewController, MFMessageComposeViewContr
         switch (result)
         {
             case .cancelled:
-                print("Message was cancelled")
+                print("Message cancelled")
                 self.dismiss(animated: true, completion: nil)
             //fallthrough
             case .failed:
                 print("Message failed")
                 self.dismiss(animated: true, completion: nil)
             case .sent:
-                print("Message was sent")
+                print("Message sent")
                 self.dismiss(animated: true, completion: nil)
         }
     }
