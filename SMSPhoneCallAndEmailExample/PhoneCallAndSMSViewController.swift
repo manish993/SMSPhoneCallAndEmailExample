@@ -9,8 +9,9 @@
 import UIKit
 import MessageUI
 
-class PhoneCallAndSMSViewController: UIViewController, MFMessageComposeViewControllerDelegate {
-    
+class EmailViewController: UIViewController, MFMailComposeViewControllerDelegate {
+     @IBOutlet var subject: UITextField!
+    @IBOutlet var body: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -19,57 +20,30 @@ class PhoneCallAndSMSViewController: UIViewController, MFMessageComposeViewContr
     }
     
     //Send SMS
-    @IBAction func sendMessage(sender: UIButton) {
+    @IBAction func sendMail(sender: UIButton) {
         
-        if MFMessageComposeViewController.canSendText() {
+        if MFMailComposeViewController.canSendmail() {
             
         
-            let messageVC = MFMessageComposeViewController()
-        
-        messageVC.body = NSLocalizedString("STR_SUBJECT", comment: "")
-        messageVC.recipients = ["+11234567890"]
-        messageVC.messageComposeDelegate = self
-        
-        self.present(messageVC, animated: false, completion: nil)
-        }
-        else{
-            print("NO SIM available")
+           let picker = MFMailComposeViewController()
+            picker.mailComposeDelegate = self
+            picker.setToRecipients(["jyothithomas.05@gmail.com"])
+            picker.setSubject(subject.text!)
+            picker.setMessageBody(body.text!, isHTML: true)
+            
+            present(picker, animated: true, completion: nil)
+        }else{
+            print("NO Email Client exist")
         }
     }
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult)
     {
         
-        switch (result)
-        {
-            case .cancelled:
-                print("Message was cancelled")
-                self.dismiss(animated: true, completion: nil)
-            //fallthrough
-            case .failed:
-                print("Message failed")
-                self.dismiss(animated: true, completion: nil)
-            case .sent:
-                print("Message was sent")
-                self.dismiss(animated: true, completion: nil)
-        }
+       dismiss(animated: true, completion: nil) 
     }
     
-    ///Make Phone Call - No delegates are used
-    @IBAction func makePhoneCall(sender: UIButton)
-    {
-        if let url = URL(string: "tel://+1123777777)"), UIApplication.shared.canOpenURL(url)
-        {
-            if #available(iOS 10, *)
-            {
-                UIApplication.shared.open(url)
-            }
-            else
-            {
-                UIApplication.shared.openURL(url)
-            }
-        }
-    }
+   
     
 }
 
